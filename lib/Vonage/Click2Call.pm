@@ -6,7 +6,7 @@ use LWP::UserAgent;
 use Carp;
 use vars qw($VERSION);
 
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 sub new {
     my ($class,%args) = @_;
@@ -57,7 +57,7 @@ sub errstr {
 # return undef on failure. true otherwise.
 sub call {
     my ($self,$from,$to) = @_;
-    my $uri = sprintf("%s/tpcc/makecall?username=%s&password=%s&fromnumber=%d&tonumber=%d",
+    my $uri = sprintf("%s/tpcc/makecall?username=%s&password=%s&fromnumber=%s&tonumber=%s",
                       $self->{baseURL},$self->{user},$self->{pass},_validPhone($from),_validPhone($to));
     my $req = HTTP::Request->new(GET => $uri);
     my $res = $self->{_userAgent}->request($req);
@@ -125,6 +125,10 @@ place a call from your Vonage line to another party.
 =head1 HISTORY
 
 =over 8
+
+=item 0.11
+
+Fixed string formatting bug (%d on phone numbers over 2.1billion numeric value). Thanks to Bill Smargiassi
 
 =item 0.10
 
